@@ -19,7 +19,7 @@ class SnakeGameViewModel: ViewModel() {
     fun onEvent(event: SnakeGameEvent) {
         when (event) {
             SnakeGameEvent.StartGame -> {
-                _state.update { it.copy(gameState = GameState.PAUSED) }
+                _state.update { it.copy(gameState = GameState.STARTED) }
                 viewModelScope.launch {
                     while (state.value.gameState == GameState.STARTED) {
                         val delayMills = when (state.value.snake.size) {
@@ -48,10 +48,10 @@ class SnakeGameViewModel: ViewModel() {
     }
 
     private fun updateDirection(offset: Offset, canvasWidth: Int) {
-        if (state.value.isGameOver) {
+        if (!state.value.isGameOver) {
             val cellSize = canvasWidth / state.value.xAxisGridSize
-            val tapX = (offset.x / cellSize.toInt())
-            val tapY = (offset.y / cellSize.toInt())
+            val tapX = (offset.x / cellSize).toInt()
+            val tapY = (offset.y / cellSize).toInt()
             val head = state.value.snake.first()
 
             _state.update {
@@ -105,7 +105,17 @@ class SnakeGameViewModel: ViewModel() {
                 newSnake.removeAt( newSnake.size - 1)
             }
 
-            return currentGame.copy(snake = newSnake, food = newFood)
+        // Check if the snake eats the food and update snake length to improve speed
+//        val newFood = if (newHead == currentGame.food) SnakeGameState.generateRandomFoodCoordinate()
+//        else currentGame.food
+//        val newSnake = if (newHead == currentGame.food) {
+//            mutableListOf(newHead) + currentGame.snake
+//        } else {
+//            mutableListOf(newHead) + currentGame.snake.dropLast(1)
+//        }
+
+
+        return currentGame.copy(snake = newSnake, food = newFood)
         }
 
         private fun isWithinBounds(
@@ -114,6 +124,6 @@ class SnakeGameViewModel: ViewModel() {
             yAxisGridSize: Int
         ): Boolean {
             return coordinate.x in 1 until xAxisGridSize - 1
-                    && coordinate.y in 1 until yAxisGridSize - 1
+                    && coordinate.y in 0 until yAxisGridSize - 1
         }
     }

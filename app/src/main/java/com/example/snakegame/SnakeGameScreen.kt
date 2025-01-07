@@ -48,10 +48,10 @@ fun SnakeGameScreen(
 
     val foodImageBitmap = ImageBitmap.imageResource(id = R.drawable.img_apple)
     val snakeHeadImageBitmap = when(state.direction) {
-        Direction.UP -> ImageBitmap.imageResource(id = R.drawable.img_snake_head)
-        Direction.DOWN -> ImageBitmap.imageResource(id = R.drawable.img_snake_head2)
-        Direction.LEFT -> ImageBitmap.imageResource(id = R.drawable.img_snake_head3)
-        Direction.RIGHT -> ImageBitmap.imageResource(id = R.drawable.img_snake_head4)
+        Direction.RIGHT -> ImageBitmap.imageResource(id = R.drawable.img_snake_head)
+        Direction.LEFT -> ImageBitmap.imageResource(id = R.drawable.img_snake_head2)
+        Direction.UP -> ImageBitmap.imageResource(id = R.drawable.img_snake_head3)
+        Direction.DOWN -> ImageBitmap.imageResource(id = R.drawable.img_snake_head4)
     }
 
     // SOUND
@@ -108,8 +108,8 @@ fun SnakeGameScreen(
                     cellSize = cellSize,
                     cellColor = Custard,
                     borderCellColor = RoyalBlue,
-                    gridHeight = state.yAxisGridSize,
-                    gridWidth = state.xAxisGridSize
+                    gridWidth = state.xAxisGridSize,
+                    gridHeight = state.yAxisGridSize
                 )
                 drawFood(
                     foodImage = foodImageBitmap,
@@ -197,7 +197,7 @@ private fun DrawScope.drawFood(
         image = foodImage,
         dstOffset = IntOffset(
             x = (coordinate.x * cellSize),
-            y = (coordinate.x * cellSize)
+            y = (coordinate.y * cellSize)
         ),
         dstSize = IntSize(cellSize, cellSize)
     )
@@ -210,7 +210,7 @@ private fun DrawScope.drawSnake(
 ) {
     val cellSizeInt = cellSize.toInt()
     snake.forEachIndexed { index, coordinate ->
-        val radius = if ( index == snake.lastIndex) cellSize / 2.5f else cellSize / 2
+        val radius = if ( index == snake.lastIndex) cellSize / 2f else cellSize / 2
         if (index == 0) {
             drawImage(
                 image = snakeHeadImage,
