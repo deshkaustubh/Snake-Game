@@ -159,7 +159,7 @@ fun SnakeGameScreen(
         AnimatedVisibility(visible = state.isGameOver) {
             Text(
                 modifier = Modifier.padding(16.dp),
-                text = "Game Over",
+                text = "Game Over!",
                 style = MaterialTheme.typography.displayMedium
             )
         }
